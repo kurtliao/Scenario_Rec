@@ -27,12 +27,12 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 
-redis_ip = 'redis'
+redis_ip = 'fx_redis'
 r = redis.Redis(host=redis_ip,port=6379,db=0)
 #db connect
 
 #r = redis.Redis(host='localhost',port=6379,db=0)
-HOST = "postgres"
+HOST = "fx_postgres"
 USER = 'postgres'
 PASSWORD = 'demois1207'
 DB = 'postgres'
@@ -134,6 +134,6 @@ def get_second_offer(vid):
     return offer_set12
 
 if __name__ == "__main__":
-  app.run(debug=True, host="0.0.0.0", port=6030)
+  app.run(debug=True, host="0.0.0.0", port=80)
 
 

@@ -3,8 +3,8 @@ MAINTAINER Kurt Liao <akurtliao@gmail.com>
 COPY . /src
 WORKDIR /src
 RUN pip install -r requirements.txt
-EXPOSE 6030
-CMD python Insert_Json_DB.py && python demo3_server_v1.py
+EXPOSE 80
+CMD sleep 10 && python Insert_Json_DB.py && python demo3_server_v1.py
 
 #docker run -itd --name postgres -e POSTGRES_PASSWORD=demois1207 -d postgres
 #docker run --name redis -d redis
