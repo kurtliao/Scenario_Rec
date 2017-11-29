@@ -90,7 +90,10 @@ def get_fx_rec(vid):
         offer_output.append ((order, max(get_inn_len(fx_pag_tag,temp_ref),get_inn_len(tag_list,temp_ref))))
     offer_output = sorted(offer_output, key=lambda ratio: ratio[1],reverse=True)
     offer_list =offer1 + [t[0] for t in offer_output]
-    return offer_list
+    offer_set12 = {}
+    offer_set12['Offer'] = offer1
+    offer_set12['Offer1'] = [t[0] for t in offer_output]
+    return offer_set12
 
 def get_user_tag(user_id):
     user_get = json.loads(r.get(user_id))
