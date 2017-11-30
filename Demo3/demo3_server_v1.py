@@ -27,12 +27,12 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 
-redis_ip = 'fx_redis'
+redis_ip = 'liao_fx_redis'
 r = redis.Redis(host=redis_ip,port=6379,db=0)
 #db connect
 
 #r = redis.Redis(host='localhost',port=6379,db=0)
-HOST = "fx_postgres"
+HOST = "liao_fx_postgres"
 USER = 'postgres'
 PASSWORD = 'demois1207'
 DB = 'postgres'
