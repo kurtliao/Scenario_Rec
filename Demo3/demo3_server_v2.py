@@ -27,12 +27,12 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 
-redis_ip = 'liao_fx_redis'
+redis_ip = 'redis'
 r = redis.Redis(host=redis_ip,port=6379,db=0)
 #db connect
 
 #r = redis.Redis(host='localhost',port=6379,db=0)
-HOST = "liao_fx_postgres"
+HOST = "postgres"
 USER = 'postgres'
 PASSWORD = 'demois1207'
 DB = 'postgres'
@@ -90,10 +90,7 @@ def get_fx_rec(vid):
         offer_output.append ((order, max(get_inn_len(fx_pag_tag,temp_ref),get_inn_len(tag_list,temp_ref))))
     offer_output = sorted(offer_output, key=lambda ratio: ratio[1],reverse=True)
     offer_list =offer1 + [t[0] for t in offer_output]
-    offer_set12 = {}
-    offer_set12['Offer'] = offer1
-    offer_set12['Offer1'] = [t[0] for t in offer_output]
-    return offer_set12
+    return offer_list
 
 def get_user_tag(user_id):
     user_get = json.loads(r.get(user_id))
@@ -124,8 +121,6 @@ def get_second_offer(vid):
     #
     rec_offer = get_rec_offer['offer_list']
     rec_offer1= get_rec_offer['offer_list1']
-    #rec_offer = getSeg_ref('second_edition',Tag_Value,cur)['offer_list']
-    #rec_offer1= getSeg_ref('second_edition',Tag_Value,cur)['offer_list1']
     offer_output = []
     for offer in rec_offer:
         offer_output.append((offer, get_tag_cos(tag_list,getoff_ref('offer_tagging',offer,cur)['OFFER_TAG']) ))
@@ -144,6 +139,6 @@ def get_second_offer(vid):
     return offer_set12
 
 if __name__ == "__main__":
-  app.run(debug=True, host="0.0.0.0", port=80)
+  app.run(debug=True, host="0.0.0.0", port=6030)
 
 
