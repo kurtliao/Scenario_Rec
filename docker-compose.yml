@@ -1,6 +1,6 @@
 version: '2'
 services:  
-  liao_r12n:
+  liaor12n:
     build:
       context: "${PWD}/Demo3"
       dockerfile: Dockerfile
@@ -9,14 +9,14 @@ services:
     networks:
       - "fx"
     depends_on:
-      - liao_fx_redis
-      - liao_fx_postgres
+      - liaofxredis
+      - liaofxpostgres
     restart: always
-  liao_fx_redis:
+  liaofxredis:
     image: redis:latest
     networks:
       - "fx"
-  liao_fx_postgres:
+  liaofxpostgres:
     image: postgres:latest
     environment: 
       - POSTGRES_PASSWORD=demois1207

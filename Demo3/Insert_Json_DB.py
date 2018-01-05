@@ -22,12 +22,12 @@ import psycopg2
 import math
 
 
-redis_ip = 'liao_fx_redis'
+redis_ip = 'liaofxredis'
 r = redis.Redis(host=redis_ip,port=6379,db=0)
 #db connect
 
 #r = redis.Redis(host='localhost',port=6379,db=0)
-HOST = "liao_fx_postgres"
+HOST = "liaofxpostgres"
 USER = 'postgres'
 PASSWORD = 'demois1207'
 DB = 'postgres'

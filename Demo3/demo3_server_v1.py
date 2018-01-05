@@ -12,8 +12,9 @@ import pandas as pd
 import json
 from datetime import datetime
 import calendar 
-from flask import Flask
+from flask import Flask,g
 from flask import jsonify
+from flask import request
 import redis
 import sys
 reload(sys)
@@ -21,18 +22,24 @@ sys.setdefaultencoding('utf-8')
 import inspect, os
 import psycopg2
 import math
+#version1.1 add CB
+#import pybreaker
+
+#time_breaker = pybreaker.CircuitBreaker(fail_max=3,reset_timeout=30)
+
+#end default user tag
+    
+
 
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-
-
-redis_ip = 'liao_fx_redis'
-r = redis.Redis(host=redis_ip,port=6379,db=0)
+redis_ip = 'liaofxredis'
+#r = redis.Redis(host=redis_ip,port=6379,db=0)
 #db connect
 
 #r = redis.Redis(host='localhost',port=6379,db=0)
-HOST = "liao_fx_postgres"
+HOST = "liaofxpostgres"
 USER = 'postgres'
 PASSWORD = 'demois1207'
 DB = 'postgres'
@@ -40,6 +47,12 @@ sql_conn = psycopg2.connect(database = DB,
                         host = HOST,
                         user = USER,
                         password = PASSWORD)
+#r = redis.Redis(host='localhost',port=6379,db=0,socket_timeout=0.1)
+#sql_conn = psycopg2.connect(database = "MJ_PROTOTYPE",
+#                        host = "localhost",
+#                        user = "liaoziqing",
+#                        password = "")
+
 
 cur = sql_conn.cursor()
 @app.route('/')
@@ -48,21 +61,37 @@ def hello():
 
 # 取得目前所有使用者名單
 
-@app.route('/user/Scenario_Rec/<string:vid>',methods=['GET'])
-def getUserScenarioRec(vid):
+@app.route('/user/Scenario_Rec',methods=['GET'])
+def getUserScenarioRec():
 #  label = json.loads(db[db.UID == uid].to_json(orient='records',force_ascii=False))
-  label = get_second_offer(int(vid))
-  res = jsonify(label)
-  res.headers['Content-Type'] = 'application/json; charset=utf-8'
-  return res
+    vid = request.args.get('vid')
+    try:
+        label = get_second_offer(int(vid))
+    except:
+        label = {
+      "Offer": ["OFF0039", "OFF0035", "OFF0036", "OFF0037", "OFF0038", "OFF0042", "OFF0062"], 
+      "Offer1": ["OFF0010", "OFF0021", "OFF0045", "OFF0008", "OFF0001", "OFF0005", "OFF0011", "OFF0013", "OFF0015", "OFF0020"], 
+      "offer_desc": "想成家的您絕對不能錯過", 
+      "offer_desc1": "旅遊大小事報你知透透"
+        }
+    res = jsonify(label)
+    res.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return res
 
-@app.route('/user/FX_Rec/<string:vid>',methods=['GET'])
-def getUserFXRec(vid):
+@app.route('/user/FX_Rec',methods=['GET'])
+def getUserFXRec():
 #  label = json.loads(db[db.UID == uid].to_json(orient='records',force_ascii=False))
-  label = get_fx_rec(int(vid))
-  res = jsonify(label)
-  res.headers['Content-Type'] = 'application/json; charset=utf-8'
-  return res
+    vid = request.args.get('vid')
+    try:
+        label = get_fx_rec(int(vid))
+    except:
+        label = {
+      "Offer": ["OFF0063"], 
+      "Offer1": ["OFF0026", "OFF0027", "OFF0022", "OFF0024", "OFF0028", "OFF0023", "OFF0025"]
+        }
+    res = jsonify(label)
+    res.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return res
 
 
 def get_fx_rec(vid):
@@ -96,7 +125,12 @@ def get_fx_rec(vid):
     return offer_set12
 
 def get_user_tag(user_id):
-    user_get = json.loads(r.get(user_id))
+    r_get = r.get(user_id)
+    if r_get !=None :
+        user_get = json.loads(r_get)
+    else:
+        default_value = 1
+        user_get = json.loads(r.get(default_value))
     return user_get
 def getSeg_ref(table,tag_value,sql_db):
     SQL = "Select tag_info from " + table + " where tag_info ->> 'Tag_Value' = '{}'".format(tag_value)
