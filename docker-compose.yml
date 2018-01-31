@@ -1,15 +1,25 @@
-version: '2'
+version: '3'
 services:  
+  tag_api:
+    build: "${PWD}/Demo3"
+    image: tag_api:1.0
+    depends_on:
+      - liaofxpostgres
+      - liaofxredis
+    container_name: tagserver
+    ports:
+      - "3015:80"
+    networks:
+      - "fx"
   liaor12n:
     build:
-      context: "${PWD}/Demo3"
+      context: "${PWD}/Demo3/Rec"
       dockerfile: Dockerfile
     ports:
       - "3010:80"
     networks:
       - "fx"
     depends_on:
-      - liaofxredis
       - liaofxpostgres
     restart: always
   liaofxredis:

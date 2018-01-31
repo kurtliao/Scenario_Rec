@@ -4,7 +4,7 @@ COPY . /src
 WORKDIR /src
 RUN pip install -r requirements.txt
 EXPOSE 80
-CMD sleep 10 && python Insert_Json_DB.py && python demo3_server_v1.py
+CMD sleep 10 && python Insert_Json_DB.py && python getTags.py
 
 #docker run -itd --name postgres -e POSTGRES_PASSWORD=demois1207 -d postgres
 #docker run --name redis -d redis

@@ -39,7 +39,7 @@ cur = sql_conn.cursor()
 
 
 # In[3]:
-
+#客群推薦的對照表有兩張，main_edition.json 是首頁的客群推薦對照表，second_edition是外匯頁的客群推薦對照表
 a = inspect.getfile(inspect.currentframe())
 b = os.path.dirname(os.path.abspath(a)) 
 file_path_main_edition = os.path.join( b , 'main_edition.json' )
